@@ -13,7 +13,7 @@ filenames_test = os.listdir(path_test)
 filepaths_training = [path_training + f for f in filenames_training]
 labels_training = [int(x[:3])-1 for x in filenames_training]
 
-filepaths_test = [path_training + f for f in filenames_test]
+filepaths_test = [path_test + f for f in filenames_test]
 labels_test = [int(x[:3])-1 for x in filenames_test]
 
 
@@ -98,7 +98,7 @@ with tf.Session() as sess:
     total_batch = int(len(filepaths_training) / batch_size)
 
 
-    feed_test_images = [tf.read_file(x) for x in filepaths_test]
+    feed_test_images = np.array([tf.image.decode_jpeg(tf.read_file(x)).eval().reshape(-1) for x in filepaths_test])
     feed_test_labels = one_hot(labels_test, one_hot_size)
 
     for epoch in range(epochs):
