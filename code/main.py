@@ -104,6 +104,7 @@ with tf.Session() as sess:
     for epoch in range(epochs):
         avg_cost = 0
         for i in range(total_batch):
+            print("Epoch: ", epoch, "Batch: ", i, "/", total_batch, end="\r")
             batch_x = np.array([tf.image.decode_jpeg(tf.read_file(x)).eval().reshape(-1) for x in filepaths_training[i*batch_size:i*batch_size+batch_size]])
             batch_y = one_hot(labels_training[i*batch_size:i*batch_size+batch_size], one_hot_size)
             _, c = sess.run([optimiser, cross_entropy], feed_dict={x: batch_x, y: batch_y})
