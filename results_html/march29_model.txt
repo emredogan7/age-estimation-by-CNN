@@ -1,0 +1,342 @@
+WARNING: The TensorFlow contrib module will not be included in TensorFlow 2.0.
+For more information, please see:
+  * https://github.com/tensorflow/community/blob/master/rfcs/20180907-contrib-sunset.md
+  * https://github.com/tensorflow/addons
+If you depend on functionality not listed there, please file an issue.
+
+WARNING:tensorflow:From /usr/local/lib/python3.6/dist-packages/tensorflow/python/framework/op_def_library.py:263: colocate_with (from tensorflow.python.framework.ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Colocations handled automatically by placer.
+WARNING:tensorflow:From /usr/local/lib/python3.6/dist-packages/tensorflow/contrib/layers/python/layers/layers.py:1624: flatten (from tensorflow.python.layers.core) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use keras.layers.flatten instead.
+WARNING:tensorflow:From /usr/local/lib/python3.6/dist-packages/tensorflow/python/ops/losses/losses_impl.py:667: to_float (from tensorflow.python.ops.math_ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use tf.cast instead.
+2019-03-28 20:47:38.105831: I tensorflow/core/platform/profile_utils/cpu_utils.cc:94] CPU Frequency: 2300000000 Hz
+2019-03-28 20:47:38.106262: I tensorflow/compiler/xla/service/service.cc:150] XLA service 0x16247e0 executing computations on platform Host. Devices:
+2019-03-28 20:47:38.106302: I tensorflow/compiler/xla/service/service.cc:158]   StreamExecutor device (0): &lt;undefined&gt;, &lt;undefined&gt;
+2019-03-28 20:47:38.283431: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:998] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2019-03-28 20:47:38.284035: I tensorflow/compiler/xla/service/service.cc:150] XLA service 0x1623fa0 executing computations on platform CUDA. Devices:
+2019-03-28 20:47:38.284078: I tensorflow/compiler/xla/service/service.cc:158]   StreamExecutor device (0): Tesla K80, Compute Capability 3.7
+2019-03-28 20:47:38.284505: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1433] Found device 0 with properties: 
+name: Tesla K80 major: 3 minor: 7 memoryClockRate(GHz): 0.8235
+pciBusID: 0000:00:04.0
+totalMemory: 11.17GiB freeMemory: 11.10GiB
+2019-03-28 20:47:38.284558: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1512] Adding visible gpu devices: 0
+2019-03-28 20:47:39.653615: I tensorflow/core/common_runtime/gpu/gpu_device.cc:984] Device interconnect StreamExecutor with strength 1 edge matrix:
+2019-03-28 20:47:39.653724: I tensorflow/core/common_runtime/gpu/gpu_device.cc:990]      0 
+2019-03-28 20:47:39.653756: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1003] 0:   N 
+2019-03-28 20:47:39.654059: W tensorflow/core/common_runtime/gpu/gpu_bfc_allocator.cc:42] Overriding allow_growth setting because the TF_FORCE_GPU_ALLOW_GROWTH environment variable is set. Original config value was 0.
+2019-03-28 20:47:39.654165: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1115] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 10754 MB memory) -&gt; physical GPU (device: 0, name: Tesla K80, pci bus id: 0000:00:04.0, compute capability: 3.7)
+2019-03-28 20:47:39.686878: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1512] Adding visible gpu devices: 0
+2019-03-28 20:47:39.686943: I tensorflow/core/common_runtime/gpu/gpu_device.cc:984] Device interconnect StreamExecutor with strength 1 edge matrix:
+2019-03-28 20:47:39.686989: I tensorflow/core/common_runtime/gpu/gpu_device.cc:990]      0 
+2019-03-28 20:47:39.687007: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1003] 0:   N 
+2019-03-28 20:47:39.687303: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1115] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 10754 MB memory) -&gt; physical GPU (device: 0, name: Tesla K80, pci bus id: 0000:00:04.0, compute capability: 3.7)
+2019-03-28 20:47:45.409533: I tensorflow/stream_executor/dso_loader.cc:152] successfully opened CUDA library libcublas.so.10.0 locally
+Epoch: 1 , loss: 897.113 , train accuracy: 0.016
+Epoch: 2 , loss: 535.229 , train accuracy: 0.022
+Epoch: 3 , loss: 446.131 , train accuracy: 0.028
+Epoch: 4 , loss: 439.020 , train accuracy: 0.027
+Epoch: 5 , loss: 412.413 , train accuracy: 0.022
+Epoch: 6 , loss: 401.144 , train accuracy: 0.031
+Epoch: 7 , loss: 392.593 , train accuracy: 0.024
+Epoch: 8 , loss: 384.236 , train accuracy: 0.029
+Epoch: 9 , loss: 379.477 , train accuracy: 0.025
+Epoch: 10 , loss: 372.138 , train accuracy: 0.028
+Epoch: 11 , loss: 365.612 , train accuracy: 0.026
+Epoch: 12 , loss: 355.461 , train accuracy: 0.020
+Epoch: 13 , loss: 339.565 , train accuracy: 0.020
+Epoch: 14 , loss: 331.500 , train accuracy: 0.022
+Epoch: 15 , loss: 323.750 , train accuracy: 0.021
+Epoch: 16 , loss: 318.335 , train accuracy: 0.025
+Epoch: 17 , loss: 312.354 , train accuracy: 0.020
+Epoch: 18 , loss: 310.129 , train accuracy: 0.022
+Epoch: 19 , loss: 298.438 , train accuracy: 0.029
+Epoch: 20 , loss: 292.270 , train accuracy: 0.020
+Epoch: 21 , loss: 283.691 , train accuracy: 0.028
+Epoch: 22 , loss: 268.505 , train accuracy: 0.024
+Epoch: 23 , loss: 263.953 , train accuracy: 0.023
+Epoch: 24 , loss: 284.800 , train accuracy: 0.030
+Epoch: 25 , loss: 273.255 , train accuracy: 0.030
+Epoch: 26 , loss: 251.420 , train accuracy: 0.032
+Epoch: 27 , loss: 235.357 , train accuracy: 0.027
+Epoch: 28 , loss: 228.607 , train accuracy: 0.029
+Epoch: 29 , loss: 224.541 , train accuracy: 0.030
+Epoch: 30 , loss: 218.198 , train accuracy: 0.028
+Epoch: 31 , loss: 215.190 , train accuracy: 0.026
+Epoch: 32 , loss: 210.453 , train accuracy: 0.028
+Epoch: 33 , loss: 212.331 , train accuracy: 0.028
+Epoch: 34 , loss: 203.572 , train accuracy: 0.029
+Epoch: 35 , loss: 202.357 , train accuracy: 0.030
+Epoch: 36 , loss: 195.307 , train accuracy: 0.032
+Epoch: 37 , loss: 193.630 , train accuracy: 0.029
+Epoch: 38 , loss: 194.851 , train accuracy: 0.027
+Epoch: 39 , loss: 186.485 , train accuracy: 0.027
+Epoch: 40 , loss: 186.290 , train accuracy: 0.031
+Epoch: 41 , loss: 190.296 , train accuracy: 0.029
+Epoch: 42 , loss: 181.204 , train accuracy: 0.029
+Epoch: 43 , loss: 180.312 , train accuracy: 0.033
+Epoch: 44 , loss: 180.233 , train accuracy: 0.033
+Epoch: 45 , loss: 174.846 , train accuracy: 0.037
+Epoch: 46 , loss: 174.578 , train accuracy: 0.029
+Epoch: 47 , loss: 177.743 , train accuracy: 0.037
+Epoch: 48 , loss: 170.210 , train accuracy: 0.037
+Epoch: 49 , loss: 167.425 , train accuracy: 0.030
+Epoch: 50 , loss: 173.886 , train accuracy: 0.035
+Epoch: 51 , loss: 165.523 , train accuracy: 0.039
+Epoch: 52 , loss: 161.263 , train accuracy: 0.036
+Epoch: 53 , loss: 168.194 , train accuracy: 0.035
+Epoch: 54 , loss: 160.236 , train accuracy: 0.041
+Epoch: 55 , loss: 154.474 , train accuracy: 0.039
+Epoch: 56 , loss: 157.412 , train accuracy: 0.032
+Epoch: 57 , loss: 163.939 , train accuracy: 0.041
+Epoch: 58 , loss: 155.738 , train accuracy: 0.041
+Epoch: 59 , loss: 152.650 , train accuracy: 0.039
+Epoch: 60 , loss: 146.910 , train accuracy: 0.050
+Epoch: 61 , loss: 142.400 , train accuracy: 0.039
+Epoch: 62 , loss: 147.161 , train accuracy: 0.038
+Epoch: 63 , loss: 141.420 , train accuracy: 0.045
+Epoch: 64 , loss: 135.465 , train accuracy: 0.043
+Epoch: 65 , loss: 133.646 , train accuracy: 0.043
+Epoch: 66 , loss: 143.931 , train accuracy: 0.031
+Epoch: 67 , loss: 142.491 , train accuracy: 0.052
+Epoch: 68 , loss: 133.248 , train accuracy: 0.041
+Epoch: 69 , loss: 131.832 , train accuracy: 0.040
+Epoch: 70 , loss: 126.742 , train accuracy: 0.044
+Epoch: 71 , loss: 124.629 , train accuracy: 0.049
+Epoch: 72 , loss: 120.888 , train accuracy: 0.050
+Epoch: 73 , loss: 115.913 , train accuracy: 0.047
+Epoch: 74 , loss: 116.350 , train accuracy: 0.040
+Epoch: 75 , loss: 121.814 , train accuracy: 0.049
+Epoch: 76 , loss: 113.271 , train accuracy: 0.051
+Epoch: 77 , loss: 107.377 , train accuracy: 0.048
+Epoch: 78 , loss: 106.602 , train accuracy: 0.043
+Epoch: 79 , loss: 112.503 , train accuracy: 0.045
+Epoch: 80 , loss: 108.570 , train accuracy: 0.049
+Epoch: 81 , loss: 103.534 , train accuracy: 0.055
+Epoch: 82 , loss: 98.284 , train accuracy: 0.049
+Epoch: 83 , loss: 98.758 , train accuracy: 0.046
+Epoch: 84 , loss: 100.996 , train accuracy: 0.049
+Epoch: 85 , loss: 95.892 , train accuracy: 0.049
+Epoch: 86 , loss: 91.539 , train accuracy: 0.056
+Epoch: 87 , loss: 87.322 , train accuracy: 0.052
+Epoch: 88 , loss: 84.631 , train accuracy: 0.052
+Epoch: 89 , loss: 86.363 , train accuracy: 0.054
+Epoch: 90 , loss: 80.711 , train accuracy: 0.052
+Epoch: 91 , loss: 78.558 , train accuracy: 0.052
+Epoch: 92 , loss: 76.085 , train accuracy: 0.052
+Epoch: 93 , loss: 122.019 , train accuracy: 0.013
+Epoch: 94 , loss: 180.741 , train accuracy: 0.046
+Epoch: 95 , loss: 147.116 , train accuracy: 0.050
+Epoch: 96 , loss: 116.332 , train accuracy: 0.050
+Epoch: 97 , loss: 101.528 , train accuracy: 0.046
+Epoch: 98 , loss: 91.928 , train accuracy: 0.048
+Epoch: 99 , loss: 82.262 , train accuracy: 0.059
+Epoch: 100 , loss: 78.188 , train accuracy: 0.056
+Epoch: 101 , loss: 75.224 , train accuracy: 0.062
+Epoch: 102 , loss: 71.838 , train accuracy: 0.059
+Epoch: 103 , loss: 70.166 , train accuracy: 0.060
+Epoch: 104 , loss: 67.345 , train accuracy: 0.056
+Epoch: 105 , loss: 65.828 , train accuracy: 0.062
+Epoch: 106 , loss: 64.465 , train accuracy: 0.063
+Epoch: 107 , loss: 62.612 , train accuracy: 0.062
+Epoch: 108 , loss: 61.473 , train accuracy: 0.059
+Epoch: 109 , loss: 60.978 , train accuracy: 0.060
+Epoch: 110 , loss: 59.998 , train accuracy: 0.062
+Epoch: 111 , loss: 59.168 , train accuracy: 0.062
+Epoch: 112 , loss: 58.804 , train accuracy: 0.062
+Epoch: 113 , loss: 57.493 , train accuracy: 0.061
+Epoch: 114 , loss: 54.641 , train accuracy: 0.063
+Epoch: 115 , loss: 54.723 , train accuracy: 0.057
+Epoch: 116 , loss: 55.505 , train accuracy: 0.065
+Epoch: 117 , loss: 54.331 , train accuracy: 0.067
+Epoch: 118 , loss: 55.427 , train accuracy: 0.059
+Epoch: 119 , loss: 55.701 , train accuracy: 0.063
+Epoch: 120 , loss: 53.482 , train accuracy: 0.061
+Epoch: 121 , loss: 55.051 , train accuracy: 0.061
+Epoch: 122 , loss: 59.172 , train accuracy: 0.042
+Epoch: 123 , loss: 55.023 , train accuracy: 0.065
+Epoch: 124 , loss: 48.786 , train accuracy: 0.062
+Epoch: 125 , loss: 46.215 , train accuracy: 0.075
+Epoch: 126 , loss: 43.971 , train accuracy: 0.059
+Epoch: 127 , loss: 41.526 , train accuracy: 0.069
+Epoch: 128 , loss: 41.105 , train accuracy: 0.079
+Epoch: 129 , loss: 40.303 , train accuracy: 0.075
+Epoch: 130 , loss: 38.831 , train accuracy: 0.072
+Epoch: 131 , loss: 37.627 , train accuracy: 0.073
+Epoch: 132 , loss: 36.915 , train accuracy: 0.062
+Epoch: 133 , loss: 36.652 , train accuracy: 0.063
+Epoch: 134 , loss: 36.703 , train accuracy: 0.061
+Epoch: 135 , loss: 37.242 , train accuracy: 0.059
+Epoch: 136 , loss: 39.999 , train accuracy: 0.062
+Epoch: 137 , loss: 42.629 , train accuracy: 0.069
+Epoch: 138 , loss: 47.509 , train accuracy: 0.058
+Epoch: 139 , loss: 56.446 , train accuracy: 0.041
+Epoch: 140 , loss: 48.548 , train accuracy: 0.064
+Epoch: 141 , loss: 43.500 , train accuracy: 0.074
+Epoch: 142 , loss: 39.643 , train accuracy: 0.083
+Epoch: 143 , loss: 33.308 , train accuracy: 0.081
+Epoch: 144 , loss: 32.838 , train accuracy: 0.081
+Epoch: 145 , loss: 29.672 , train accuracy: 0.086
+Epoch: 146 , loss: 29.371 , train accuracy: 0.082
+Epoch: 147 , loss: 28.587 , train accuracy: 0.079
+Epoch: 148 , loss: 27.439 , train accuracy: 0.087
+Epoch: 149 , loss: 26.848 , train accuracy: 0.079
+Epoch: 150 , loss: 26.556 , train accuracy: 0.086
+Epoch: 151 , loss: 25.662 , train accuracy: 0.092
+Epoch: 152 , loss: 24.833 , train accuracy: 0.084
+Epoch: 153 , loss: 24.552 , train accuracy: 0.079
+Epoch: 154 , loss: 24.838 , train accuracy: 0.079
+Epoch: 155 , loss: 25.552 , train accuracy: 0.083
+Epoch: 156 , loss: 26.738 , train accuracy: 0.096
+Epoch: 157 , loss: 32.062 , train accuracy: 0.054
+Epoch: 158 , loss: 41.091 , train accuracy: 0.043
+Epoch: 159 , loss: 39.548 , train accuracy: 0.073
+Epoch: 160 , loss: 30.587 , train accuracy: 0.057
+Epoch: 161 , loss: 26.247 , train accuracy: 0.081
+Epoch: 162 , loss: 24.564 , train accuracy: 0.075
+Epoch: 163 , loss: 21.654 , train accuracy: 0.097
+Epoch: 164 , loss: 21.727 , train accuracy: 0.102
+Epoch: 165 , loss: 19.460 , train accuracy: 0.101
+Epoch: 166 , loss: 18.381 , train accuracy: 0.106
+Epoch: 167 , loss: 18.152 , train accuracy: 0.109
+Epoch: 168 , loss: 17.685 , train accuracy: 0.106
+Epoch: 169 , loss: 17.178 , train accuracy: 0.111
+Epoch: 170 , loss: 16.686 , train accuracy: 0.103
+Epoch: 171 , loss: 16.380 , train accuracy: 0.100
+Epoch: 172 , loss: 16.284 , train accuracy: 0.101
+Epoch: 173 , loss: 16.562 , train accuracy: 0.112
+Epoch: 174 , loss: 17.505 , train accuracy: 0.116
+Epoch: 175 , loss: 20.647 , train accuracy: 0.054
+Epoch: 176 , loss: 26.553 , train accuracy: 0.114
+Epoch: 177 , loss: 20.398 , train accuracy: 0.065
+Epoch: 178 , loss: 20.390 , train accuracy: 0.119
+Epoch: 179 , loss: 18.068 , train accuracy: 0.081
+Epoch: 180 , loss: 21.554 , train accuracy: 0.048
+Epoch: 181 , loss: 26.773 , train accuracy: 0.112
+Epoch: 182 , loss: 26.518 , train accuracy: 0.120
+Epoch: 183 , loss: 19.207 , train accuracy: 0.110
+Epoch: 184 , loss: 16.807 , train accuracy: 0.122
+Epoch: 185 , loss: 15.951 , train accuracy: 0.075
+Epoch: 186 , loss: 14.076 , train accuracy: 0.127
+Epoch: 187 , loss: 13.234 , train accuracy: 0.108
+Epoch: 188 , loss: 12.471 , train accuracy: 0.126
+Epoch: 189 , loss: 11.663 , train accuracy: 0.139
+Epoch: 190 , loss: 11.614 , train accuracy: 0.133
+Epoch: 191 , loss: 11.074 , train accuracy: 0.105
+Epoch: 192 , loss: 10.850 , train accuracy: 0.125
+Epoch: 193 , loss: 10.471 , train accuracy: 0.144
+Epoch: 194 , loss: 10.617 , train accuracy: 0.134
+Epoch: 195 , loss: 11.113 , train accuracy: 0.144
+Epoch: 196 , loss: 11.483 , train accuracy: 0.118
+Epoch: 197 , loss: 11.839 , train accuracy: 0.068
+Epoch: 198 , loss: 14.709 , train accuracy: 0.083
+Epoch: 199 , loss: 13.586 , train accuracy: 0.141
+Epoch: 200 , loss: 14.074 , train accuracy: 0.076
+Epoch: 201 , loss: 15.537 , train accuracy: 0.070
+Epoch: 202 , loss: 16.281 , train accuracy: 0.146
+Epoch: 203 , loss: 18.000 , train accuracy: 0.075
+Epoch: 204 , loss: 22.649 , train accuracy: 0.029
+Epoch: 205 , loss: 18.329 , train accuracy: 0.098
+Epoch: 206 , loss: 14.773 , train accuracy: 0.064
+Epoch: 207 , loss: 12.501 , train accuracy: 0.124
+Epoch: 208 , loss: 10.964 , train accuracy: 0.079
+Epoch: 209 , loss: 9.713 , train accuracy: 0.143
+Epoch: 210 , loss: 9.030 , train accuracy: 0.137
+Epoch: 211 , loss: 7.752 , train accuracy: 0.140
+Epoch: 212 , loss: 7.508 , train accuracy: 0.168
+Epoch: 213 , loss: 7.587 , train accuracy: 0.147
+Epoch: 214 , loss: 7.105 , train accuracy: 0.135
+Epoch: 215 , loss: 6.924 , train accuracy: 0.149
+Epoch: 216 , loss: 6.668 , train accuracy: 0.165
+Epoch: 217 , loss: 6.465 , train accuracy: 0.160
+Epoch: 218 , loss: 6.287 , train accuracy: 0.156
+Epoch: 219 , loss: 6.132 , train accuracy: 0.145
+Epoch: 220 , loss: 6.039 , train accuracy: 0.157
+Epoch: 221 , loss: 6.032 , train accuracy: 0.168
+Epoch: 222 , loss: 6.151 , train accuracy: 0.183
+Epoch: 223 , loss: 6.337 , train accuracy: 0.181
+Epoch: 224 , loss: 6.685 , train accuracy: 0.133
+Epoch: 225 , loss: 7.867 , train accuracy: 0.059
+Epoch: 226 , loss: 12.065 , train accuracy: 0.068
+Epoch: 227 , loss: 9.866 , train accuracy: 0.160
+Epoch: 228 , loss: 12.116 , train accuracy: 0.106
+Epoch: 229 , loss: 12.297 , train accuracy: 0.033
+Epoch: 230 , loss: 12.561 , train accuracy: 0.172
+Epoch: 231 , loss: 15.633 , train accuracy: 0.168
+Epoch: 232 , loss: 12.243 , train accuracy: 0.054
+Epoch: 233 , loss: 9.326 , train accuracy: 0.170
+Epoch: 234 , loss: 8.951 , train accuracy: 0.054
+Epoch: 235 , loss: 7.592 , train accuracy: 0.187
+Epoch: 236 , loss: 6.991 , train accuracy: 0.140
+Epoch: 237 , loss: 5.583 , train accuracy: 0.147
+Epoch: 238 , loss: 5.549 , train accuracy: 0.176
+Epoch: 239 , loss: 5.866 , train accuracy: 0.116
+Epoch: 240 , loss: 5.457 , train accuracy: 0.146
+Epoch: 241 , loss: 5.735 , train accuracy: 0.166
+Epoch: 242 , loss: 5.465 , train accuracy: 0.133
+Epoch: 243 , loss: 5.367 , train accuracy: 0.141
+Epoch: 244 , loss: 4.990 , train accuracy: 0.169
+Epoch: 245 , loss: 5.134 , train accuracy: 0.171
+Epoch: 246 , loss: 5.225 , train accuracy: 0.141
+Epoch: 247 , loss: 5.143 , train accuracy: 0.131
+Epoch: 248 , loss: 4.901 , train accuracy: 0.141
+Epoch: 249 , loss: 4.520 , train accuracy: 0.159
+Epoch: 250 , loss: 4.486 , train accuracy: 0.164
+Epoch: 251 , loss: 4.606 , train accuracy: 0.156
+Epoch: 252 , loss: 4.721 , train accuracy: 0.142
+Epoch: 253 , loss: 4.738 , train accuracy: 0.131
+Epoch: 254 , loss: 4.629 , train accuracy: 0.129
+Epoch: 255 , loss: 4.344 , train accuracy: 0.153
+Epoch: 256 , loss: 4.387 , train accuracy: 0.170
+Epoch: 257 , loss: 5.154 , train accuracy: 0.165
+Epoch: 258 , loss: 5.704 , train accuracy: 0.121
+Epoch: 259 , loss: 5.945 , train accuracy: 0.071
+Epoch: 260 , loss: 6.514 , train accuracy: 0.118
+Epoch: 261 , loss: 5.250 , train accuracy: 0.162
+Epoch: 262 , loss: 6.581 , train accuracy: 0.162
+Epoch: 263 , loss: 7.281 , train accuracy: 0.084
+Epoch: 264 , loss: 6.763 , train accuracy: 0.106
+Epoch: 265 , loss: 5.584 , train accuracy: 0.139
+Epoch: 266 , loss: 6.053 , train accuracy: 0.155
+Epoch: 267 , loss: 6.700 , train accuracy: 0.075
+Epoch: 268 , loss: 5.930 , train accuracy: 0.133
+Epoch: 269 , loss: 5.091 , train accuracy: 0.149
+Epoch: 270 , loss: 5.973 , train accuracy: 0.125
+Epoch: 271 , loss: 5.968 , train accuracy: 0.099
+Epoch: 272 , loss: 5.775 , train accuracy: 0.143
+Epoch: 273 , loss: 6.073 , train accuracy: 0.137
+Epoch: 274 , loss: 6.448 , train accuracy: 0.114
+Epoch: 275 , loss: 6.270 , train accuracy: 0.109
+Epoch: 276 , loss: 7.684 , train accuracy: 0.127
+Epoch: 277 , loss: 9.968 , train accuracy: 0.088
+Epoch: 278 , loss: 7.476 , train accuracy: 0.123
+Epoch: 279 , loss: 9.283 , train accuracy: 0.089
+Epoch: 280 , loss: 9.562 , train accuracy: 0.114
+Epoch: 281 , loss: 12.488 , train accuracy: 0.098
+Epoch: 282 , loss: 9.026 , train accuracy: 0.126
+Epoch: 283 , loss: 15.983 , train accuracy: 0.079
+Epoch: 284 , loss: 15.950 , train accuracy: 0.093
+Epoch: 285 , loss: 22.373 , train accuracy: 0.094
+Epoch: 286 , loss: 22.558 , train accuracy: 0.089
+Epoch: 287 , loss: 28.164 , train accuracy: 0.085
+Epoch: 288 , loss: 36.142 , train accuracy: 0.071
+Epoch: 289 , loss: 36.507 , train accuracy: 0.062
+Epoch: 290 , loss: 44.168 , train accuracy: 0.068
+Epoch: 291 , loss: 67.624 , train accuracy: 0.028
+Epoch: 292 , loss: 95.808 , train accuracy: 0.071
+Epoch: 293 , loss: 55.966 , train accuracy: 0.065
+Epoch: 294 , loss: 59.895 , train accuracy: 0.060
+Epoch: 295 , loss: 34.427 , train accuracy: 0.068
+Epoch: 296 , loss: 51.344 , train accuracy: 0.044
+Epoch: 297 , loss: 88.340 , train accuracy: 0.010
+Epoch: 298 , loss: 169.224 , train accuracy: 0.058
+Epoch: 299 , loss: 108.583 , train accuracy: 0.050
+Epoch: 300 , loss: 62.172 , train accuracy: 0.064
+
+Training complete!
+Test Accuracy: 0.0419921875
+prediction(last batch): [34 43 37 ...  8 37 44]
+labels_test(last batch: [43 50 42 ...  2 45 28]
