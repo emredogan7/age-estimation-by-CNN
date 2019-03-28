@@ -1,93 +1,103 @@
 import numpy as np
 import tensorflow as tf
 import os
+import sys
 
 
-path_training = "./../data/training/" 
-path_test = "./../data/test/"
+# hiperparamaters
+learning_rate = 0.001
+epochs = 100
+batch_size = 128
+filter_count = 32
 
-filenames_training = os.listdir(path_training)
-np.random.shuffle(filenames_training)
-filenames_test = os.listdir(path_test)
+x = tf.placeholder(tf.float32, [None, 91*91])
+x_shaped = tf.reshape(x, [-1, 91, 91, 1])
+y = tf.placeholder(tf.int32, [None, 1])
 
-filepaths_training = [path_training + f for f in filenames_training]
-labels_training = [int(x[:3])-1 for x in filenames_training]
+conv1 = tf.contrib.layers.conv2d(
+    inputs=x_shaped,
+    num_outputs=filter_count,
+    kernel_size=5,
+    # stride=1,
+    # padding='SAME',
+    # activation_fn=tf.nn.relu,
+    # weights_initializer=initializers.xavier_initializer(),
+    # biases_initializer=tf.zeros_initializer(),
+)
+conv1_1 = tf.contrib.layers.conv2d(
+    inputs=conv1,
+    num_outputs=filter_count/2,
+    kernel_size=1,
+    # stride=1,
+    # padding='SAME',
+    # activation_fn=tf.nn.relu,
+    # weights_initializer=initializers.xavier_initializer(),
+    # biases_initializer=tf.zeros_initializer(),
+)
+conv2 = tf.contrib.layers.conv2d(
+    inputs=conv1_1,
+    num_outputs=filter_count,
+    kernel_size=5,
+    # stride=1,
+    # padding='SAME',
+    # activation_fn=tf.nn.relu,
+    # weights_initializer=initializers.xavier_initializer(),
+    # biases_initializer=tf.zeros_initializer(),
+)
+max_pool1 = tf.contrib.layers.max_pool2d(
+    inputs=conv2,
+    kernel_size=2,
+    # stride=2,
+    # padding='VALID',
+)
+conv3 = tf.contrib.layers.conv2d(
+    inputs=max_pool1,
+    num_outputs=filter_count*2,
+    kernel_size=5,
+    # stride=1,
+    # padding='SAME',
+    # activation_fn=tf.nn.relu,
+    # weights_initializer=initializers.xavier_initializer(),
+    # biases_initializer=tf.zeros_initializer(),
+)
+max_pool2 = tf.contrib.layers.max_pool2d(
+    inputs=conv3,
+    kernel_size=2,
+    # stride=2,
+    # padding='VALID',
+)
 
-filepaths_test = [path_test + f for f in filenames_test]
-labels_test = [int(x[:3])-1 for x in filenames_test]
+# flattened = tf.reshape(max_pool2, [-1, 23 * 23 * 32])
+flattened = tf.contrib.layers.flatten(max_pool2)
 
+fc1 = tf.contrib.layers.fully_connected(
+    inputs=flattened,
+    num_outputs=100,
+    # activation_fn=tf.nn.relu,
+    # weights_initializer=initializers.xavier_initializer(),
+    # biases_initializer=tf.zeros_initializer(),
+)
 
-learning_rate = 0.0001
-epochs = 10
-batch_size = 32
-image_side = 91 
-image_size = image_side * image_side
-out_label_size = 80
-one_hot_size = len(set(labels_test))
+fc2 = tf.contrib.layers.fully_connected(
+    inputs=fc1,
+    num_outputs=1,
+    # activation_fn=tf.nn.relu,
+    # weights_initializer=initializers.xavier_initializer(),
+    # biases_initializer=tf.zeros_initializer(),
+)
 
-# declare the training data placeholders
-# input x - for 28 x 28 pixels = 784 - this is the flattened image data that is drawn from 
-# mnist.train.nextbatch()
-x = tf.placeholder(tf.float32, [None, image_size])
-# dynamically reshape the input
-x_shaped = tf.reshape(x, [-1, image_side, image_side, 1])
-# now declare the output data placeholder - 10 digits
-y = tf.placeholder(tf.float32, [None, out_label_size])
+output = tf.cast(tf.round(fc2), tf.int32)
 
-def one_hot(y, size):
-    return np.eye(size)[y]
+loss_mse = tf.losses.mean_squared_error(y, fc2)
 
-def create_new_conv_layer(input_data, num_input_channels, num_filters, filter_shape, pool_shape, name):
-    # setup the filter input shape for tf.nn.conv_2d
-    conv_filt_shape = [filter_shape[0], filter_shape[1], num_input_channels,
-                      num_filters]
+optimiser = tf.contrib.optimizer_v2.AdamOptimizer(
+    learning_rate=learning_rate,
+).minimize(loss_mse)
 
-    # initialise weights and bias for the filter
-    weights = tf.Variable(tf.truncated_normal(conv_filt_shape, stddev=0.03),
-                                      name=name+'_W')
-    bias = tf.Variable(tf.truncated_normal([num_filters]), name=name+'_b')
-
-    # setup the convolutional layer operation
-    out_layer = tf.nn.conv2d(input_data, weights, [1, 1, 1, 1], padding='SAME')
-
-    # add the bias
-    out_layer += bias
-
-    # apply a ReLU non-linear activation
-    out_layer = tf.nn.relu(out_layer)
-
-    # now perform max pooling
-    ksize = [1, pool_shape[0], pool_shape[1], 1]
-    strides = [1, 2, 2, 1]
-    out_layer = tf.nn.max_pool(out_layer, ksize=ksize, strides=strides, 
-                               padding='SAME')
-
-    return out_layer
-
-# create some convolutional layers
-layer1 = create_new_conv_layer(x_shaped, 1, 32, [5, 5], [2, 2], name='layer1')
-layer2 = create_new_conv_layer(layer1, 32, 64, [5, 5], [2, 2], name='layer2')
-flattened = tf.reshape(layer2, [-1, 23 * 23 * 64])
-
-# setup some weights and bias values for this layer, then activate with ReLU
-wd1 = tf.Variable(tf.truncated_normal([23 * 23 * 64, 1000], stddev=0.03), name='wd1')
-bd1 = tf.Variable(tf.truncated_normal([1000], stddev=0.01), name='bd1')
-dense_layer1 = tf.matmul(flattened, wd1) + bd1
-dense_layer1 = tf.nn.relu(dense_layer1)
-
-# another layer with softmax activations
-wd2 = tf.Variable(tf.truncated_normal([1000, out_label_size], stddev=0.03), name='wd2')
-bd2 = tf.Variable(tf.truncated_normal([out_label_size], stddev=0.01), name='bd2')
-dense_layer2 = tf.matmul(dense_layer1, wd2) + bd2
-y_ = tf.nn.softmax(dense_layer2)
-cross_entropy = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=dense_layer2, labels=y))
-
-# add an optimiser
-optimiser = tf.train.AdamOptimizer(learning_rate=learning_rate).minimize(cross_entropy)
-
-# define an accuracy assessment operation
-correct_prediction = tf.equal(tf.argmax(y, 1), tf.argmax(y_, 1))
-accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
+accuracy = tf.contrib.metrics.accuracy(
+    labels=y,
+    predictions=output
+)
 
 # setup the initialisation operator
 init_op = tf.global_variables_initializer()
@@ -95,24 +105,62 @@ init_op = tf.global_variables_initializer()
 with tf.Session() as sess:
     # initialise the variables
     sess.run(init_op)
-    total_batch = int(len(filepaths_training) / batch_size)
 
+    images_train = np.load('images_train.npy')
+    labels_training = np.load('labels_training.npy')
+    images_test = np.load('images_test.npy')
+    labels_test = np.load('labels_test.npy')
 
-    feed_test_images = np.array([tf.image.decode_jpeg(tf.read_file(x)).eval().reshape(-1) for x in filepaths_test])
-    feed_test_labels = one_hot(labels_test, one_hot_size)
+    total_batch = int(len(labels_training) / batch_size)
 
     for epoch in range(epochs):
-        avg_cost = 0
+        sum_loss = 0
         for i in range(total_batch):
-            print("Epoch: ", epoch, "Batch: ", i, "/", total_batch, end="\r")
-            batch_x = np.array([tf.image.decode_jpeg(tf.read_file(x)).eval().reshape(-1) for x in filepaths_training[i*batch_size:i*batch_size+batch_size]])
-            batch_y = one_hot(labels_training[i*batch_size:i*batch_size+batch_size], one_hot_size)
-            _, c = sess.run([optimiser, cross_entropy], feed_dict={x: batch_x, y: batch_y})
-            avg_cost += c / total_batch
+            print("Epoch: ", (epoch + 1), "Batch: ",
+                  i + 1, "/", total_batch, end="\r")
 
-        test_acc = sess.run(accuracy, feed_dict={x: feed_test_images, y: feed_test_labels})
-        print("Epoch:", (epoch + 1), "cost =", "{:.3f}".format(avg_cost), "test accuracy: {:.3f}".format(test_acc))
+            batch_x = images_train[i*batch_size:i*batch_size+batch_size]
+            batch_y = labels_training[i*batch_size:i*batch_size+batch_size]
+
+            _, c = sess.run([optimiser, loss_mse], feed_dict={
+                            x: batch_x, y: batch_y})
+            sum_loss += c 
+
+        avg_loss = sum_loss / total_batch
+
+        train_acc = sess.run(accuracy, feed_dict={
+                            x: images_train[:500], y: labels_training[:500]})
+        
+        # Train acc after the epoch
+        sum_acc = 0
+        for i in range(total_batch):
+            batch_x = images_train[i*batch_size:i*batch_size+batch_size]
+            batch_y = labels_training[i*batch_size:i*batch_size+batch_size]
+            train_acc = sess.run(accuracy, feed_dict={x: batch_x, y: batch_y})
+
+            sum_acc += train_acc
+        avg_acc = sum_acc / total_batch 
+
+        print("Epoch:", (epoch + 1), ", loss:",
+              "{:.3f}".format(avg_loss), ", train accuracy: {:.3f}".format(avg_acc))
 
     print("\nTraining complete!")
-    print(sess.run(accuracy, feed_dict={x: feed_test_images, y: feed_test_labels}))
 
+
+    total_batch = int(len(labels_test) / batch_size)
+
+    sum_acc = 0
+    for i in range(total_batch):
+        batch_x = images_test[i*batch_size:i*batch_size+batch_size]
+        batch_y = labels_test[i*batch_size:i*batch_size+batch_size]
+        test_acc, prediction = sess.run([accuracy, output], feed_dict={x: batch_x, y: batch_y})
+
+        sum_acc += test_acc
+    avg_acc = sum_acc / total_batch 
+
+    # acc, prediction = sess.run([accuracy, output], feed_dict={
+    #                            x: images_test, y: labels_test})
+
+    print("Test Accuracy:", avg_acc)
+    print("prediction(last batch):", prediction.reshape(-1))
+    print("labels_test(last batch:", batch_y.reshape(-1))
