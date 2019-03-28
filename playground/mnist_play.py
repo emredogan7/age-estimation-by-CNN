@@ -26,13 +26,13 @@ batch_size = 50
 
 
 # declare the training data placeholders
-# input x - for 28 x 28 pixels = 784 - this is the flattened image data that is drawn from 
+# input x - for 28 x 28 pixels = 784 - this is the flattened image data that is drawn from
 # mnist.train.nextbatch()
-x = tf.placeholder(tf.float32, [None, 784])
+x = tf.placeholder(tf.float32, [None, 8281])
 # dynamically reshape the input
-x_shaped = tf.reshape(x, [-1, 28, 28, 1])
+x_shaped = tf.reshape(x, [-1, 91, 91, 1])
 # now declare the output data placeholder - 10 digits
-y = tf.placeholder(tf.float32, [None, 10])
+y = tf.placeholder(tf.float32, [None, 80])
 
 
 # In[12]:
@@ -60,7 +60,7 @@ def create_new_conv_layer(input_data, num_input_channels, num_filters, filter_sh
     # now perform max pooling
     ksize = [1, pool_shape[0], pool_shape[1], 1]
     strides = [1, 2, 2, 1]
-    out_layer = tf.nn.max_pool(out_layer, ksize=ksize, strides=strides, 
+    out_layer = tf.nn.max_pool(out_layer, ksize=ksize, strides=strides,
                                padding='SAME')
 
     return out_layer
@@ -89,8 +89,8 @@ dense_layer1 = tf.nn.relu(dense_layer1)
 
 
 # another layer with softmax activations
-wd2 = tf.Variable(tf.truncated_normal([1000, 10], stddev=0.03), name='wd2')
-bd2 = tf.Variable(tf.truncated_normal([10], stddev=0.01), name='bd2')
+wd2 = tf.Variable(tf.truncated_normal([1000, 80], stddev=0.03), name='wd2')
+bd2 = tf.Variable(tf.truncated_normal([80], stddev=0.01), name='bd2')
 dense_layer2 = tf.matmul(dense_layer1, wd2) + bd2
 y_ = tf.nn.softmax(dense_layer2)
 
@@ -122,13 +122,20 @@ with tf.Session() as sess:
         avg_cost = 0
         for i in range(total_batch):
             batch_x, batch_y = mnist.train.next_batch(batch_size=batch_size)
-            _, c = sess.run([optimiser, cross_entropy], 
+            _, c = sess.run([optimiser, cross_entropy],
                             feed_dict={x: batch_x, y: batch_y})
             avg_cost += c / total_batch
-        test_acc = sess.run(accuracy, 
+        test_acc = sess.run(accuracy,
                        feed_dict={x: mnist.test.images, y: mnist.test.labels})
+                       # To be updated !!
+                       # IMPORTANT
+                       #
+                       #
         print("Epoch:", (epoch + 1), "cost =", "{:.3f}".format(avg_cost), "test accuracy: {:.3f}".format(test_acc))
 
     print("\nTraining complete!")
     print(sess.run(accuracy, feed_dict={x: mnist.test.images, y: mnist.test.labels}))
-
+    # To be updated !!
+    # IMPORTANT
+    #
+    #
