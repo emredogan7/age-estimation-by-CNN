@@ -6,7 +6,7 @@ import sys
 
 # hiperparamaters
 learning_rate = 0.001
-epochs = 100
+epochs = 300
 batch_size = 128
 filter_count = 32
 
@@ -88,11 +88,12 @@ fc2 = tf.contrib.layers.fully_connected(
 
 output = tf.cast(tf.round(fc2), tf.int32)
 
-loss_mse = tf.losses.mean_squared_error(y, fc2)
+loss_mae = tf.losses.absolute_difference(y, fc2)
+loss_mae_round = tf.losses.absolute_difference(y, output)
 
 optimiser = tf.contrib.optimizer_v2.AdamOptimizer(
     learning_rate=learning_rate,
-).minimize(loss_mse)
+).minimize(loss_mae)
 
 accuracy = tf.contrib.metrics.accuracy(
     labels=y,
@@ -122,14 +123,14 @@ with tf.Session() as sess:
             batch_x = images_train[i*batch_size:i*batch_size+batch_size]
             batch_y = labels_training[i*batch_size:i*batch_size+batch_size]
 
-            _, c = sess.run([optimiser, loss_mse], feed_dict={
+            _, c = sess.run([optimiser, loss_mae_round], feed_dict={
                             x: batch_x, y: batch_y})
             sum_loss += c 
 
         avg_loss = sum_loss / total_batch
 
-        train_acc = sess.run(accuracy, feed_dict={
-                            x: images_train[:500], y: labels_training[:500]})
+        # train_acc = sess.run(accuracy, feed_dict={
+        #                     x: images_train[:500], y: labels_training[:500]})
         
         # Train acc after the epoch
         sum_acc = 0

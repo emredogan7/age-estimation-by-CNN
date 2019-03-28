@@ -7,6 +7,9 @@ import os
 path_training = "./../data/training/"
 path_test = "./../data/test/"
 
+# path_training = "C:\\Users\\alper\\Workspaces\\cs559-homework\\data\\training\\"
+# path_test = "C:\\Users\\alper\\Workspaces\\cs559-homework\\data\\test\\"
+
 # read train and test file names
 filenames_training = os.listdir(path_training)
 filenames_test = os.listdir(path_test)
@@ -16,8 +19,8 @@ np.random.shuffle(filenames_training)
 np.random.shuffle(filenames_test)
 
 # get a set of filenames for speeding up
-filenames_training = filenames_training[:1000]
-filenames_test = filenames_test[:200]
+filenames_training = filenames_training#[:1000]
+filenames_test = filenames_test#[:200]
 
 # get paths of file names
 filepaths_training = [path_training + f for f in filenames_training]
