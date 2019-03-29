@@ -1,10 +1,11 @@
+print("v2")
 import numpy as np
 import tensorflow as tf
 import os
 import sys
 
 
-# hiperparamaters
+# hyperparamaters
 learning_rate = 0.001
 epochs = 300
 batch_size = 128
@@ -113,7 +114,7 @@ with tf.Session() as sess:
     labels_test = np.load('labels_test.npy')
 
     total_batch = int(len(labels_training) / batch_size)
-
+    list_of_losses = []
     for epoch in range(epochs):
         sum_loss = 0
         for i in range(total_batch):
@@ -144,6 +145,12 @@ with tf.Session() as sess:
 
         print("Epoch:", (epoch + 1), ", loss:",
               "{:.3f}".format(avg_loss), ", train accuracy: {:.3f}".format(avg_acc))
+
+        list_of_losses.append(avg_loss)
+
+    with open('elbow_data.txt', 'w') as f:
+        for item in list_of_losses:
+            f.write("%s\n" % item)
 
     print("\nTraining complete!")
 
