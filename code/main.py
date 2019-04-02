@@ -6,198 +6,217 @@ import os
 import sys
 
 
+images_train = np.load('images_train.npy')
+labels_training = np.load('labels_training.npy')
+images_validation = np.load('images_validation.npy')
+labels_validation = np.load('labels_validation.npy')
+images_test = np.load('images_test.npy')
+labels_test = np.load('labels_test.npy')
+
 # hyperparamaters
-learning_rate = 0.001
-epochs = 300
-batch_size = 50
-filter_count = 32
+# learning_rate = 0.001
+epochs = 70
+# batch_size = 50
+# filter_count = 32
 
-x = tf.placeholder(tf.float32, [None, 91*91])
-x_shaped = tf.reshape(x, [-1, 91, 91, 1])
-y = tf.placeholder(tf.int32, [None, 1])
+for learning_rate in [0.001, 0.01, 0.0001]:
+    for batch_size in [50, 100, 500]:
+        for filter_count in [16, 32, 64, 128]:
+            for maxpool_size in [2, 3, 5]:
+                for hidden_nodes in [50, 100, 200]:
 
-conv1 = tf.contrib.layers.conv2d(
-    inputs=x_shaped,
-    num_outputs=filter_count,
-    kernel_size=5,
-    # stride=1,
-    # padding='SAME',
-    # activation_fn=tf.nn.relu,
-    # weights_initializer=initializers.xavier_initializer(),
-    # biases_initializer=tf.zeros_initializer(),
-)
-conv1_1 = tf.contrib.layers.conv2d(
-    inputs=conv1,
-    num_outputs=filter_count/2,
-    kernel_size=1,
-    # stride=1,
-    # padding='SAME',
-    # activation_fn=tf.nn.relu,
-    # weights_initializer=initializers.xavier_initializer(),
-    # biases_initializer=tf.zeros_initializer(),
-)
-conv2 = tf.contrib.layers.conv2d(
-    inputs=conv1_1,
-    num_outputs=filter_count,
-    kernel_size=5,
-    # stride=1,
-    # padding='SAME',
-    # activation_fn=tf.nn.relu,
-    # weights_initializer=initializers.xavier_initializer(),
-    # biases_initializer=tf.zeros_initializer(),
-)
+                    outfile_name = "lr" + str(learning_rate) + "_bs" + str(batch_size) + "_fc" + str(
+                        filter_count) + "_mps"+str(maxpool_size) + "_hn"+str(hidden_nodes)
 
-conv2_bn = tf.contrib.layers.batch_norm(conv2,
-                                        center=True,
-                                        scale=True
-                                        )
-max_pool1 = tf.contrib.layers.max_pool2d(
-    inputs=conv2_bn,
-    kernel_size=2,
-    # stride=2,
-    # padding='VALID',
-)
-conv3 = tf.contrib.layers.conv2d(
-    inputs=max_pool1,
-    num_outputs=filter_count*2,
-    kernel_size=5,
-    # stride=1,
-    # padding='SAME',
-    # activation_fn=tf.nn.relu,
-    # weights_initializer=initializers.xavier_initializer(),
-    # biases_initializer=tf.zeros_initializer(),
-)
-conv3_bn = tf.contrib.layers.batch_norm(conv3,
-                                        center=True,
-                                        scale=True
-                                        )
-max_pool2 = tf.contrib.layers.max_pool2d(
-    inputs=conv3_bn,
-    kernel_size=2,
-    # stride=2,
-    # padding='VALID',
-)
+                    print("Starting " + outfile_name)
 
-# flattened = tf.reshape(max_pool2, [-1, 23 * 23 * 32])
-flattened = tf.contrib.layers.flatten(max_pool2)
+                    x = tf.placeholder(tf.float32, [None, 91*91])
+                    x_shaped = tf.reshape(x, [-1, 91, 91, 1])
+                    y = tf.placeholder(tf.int32, [None, 1])
 
-fc1 = tf.contrib.layers.fully_connected(
-    inputs=flattened,
-    num_outputs=100,
-    # activation_fn=tf.nn.relu,
-    # weights_initializer=initializers.xavier_initializer(),
-    # biases_initializer=tf.zeros_initializer(),
-)
-# batch norm layer between fully connected layers!
-fc1_bn = tf.contrib.layers.batch_norm(fc1,
-                                      center=True,
-                                      scale=True
-                                      )
-fc2 = tf.contrib.layers.fully_connected(
-    inputs=fc1_bn,
-    num_outputs=1,
-    # activation_fn=tf.nn.relu,
-    # weights_initializer=initializers.xavier_initializer(),
-    # biases_initializer=tf.zeros_initializer(),
-)
+                    conv1 = tf.contrib.layers.conv2d(
+                        inputs=x_shaped,
+                        num_outputs=filter_count,
+                        kernel_size=5,
+                        # stride=1,
+                        # padding='SAME',
+                        # activation_fn=tf.nn.relu,
+                        # weights_initializer=initializers.xavier_initializer(),
+                        # biases_initializer=tf.zeros_initializer(),
+                    )
+                    conv1_1 = tf.contrib.layers.conv2d(
+                        inputs=conv1,
+                        num_outputs=filter_count/2,
+                        kernel_size=1,
+                        # stride=1,
+                        # padding='SAME',
+                        # activation_fn=tf.nn.relu,
+                        # weights_initializer=initializers.xavier_initializer(),
+                        # biases_initializer=tf.zeros_initializer(),
+                    )
+                    conv2 = tf.contrib.layers.conv2d(
+                        inputs=conv1_1,
+                        num_outputs=filter_count,
+                        kernel_size=5,
+                        # stride=1,
+                        # padding='SAME',
+                        # activation_fn=tf.nn.relu,
+                        # weights_initializer=initializers.xavier_initializer(),
+                        # biases_initializer=tf.zeros_initializer(),
+                    )
 
-output = tf.cast(tf.round(fc2), tf.int32)
+                    conv2_bn = tf.contrib.layers.batch_norm(conv2,
+                                                            center=True,
+                                                            scale=True
+                                                            )
+                    max_pool1 = tf.contrib.layers.max_pool2d(
+                        inputs=conv2_bn,
+                        kernel_size=maxpool_size,
+                        # stride=2,
+                        # padding='VALID',
+                    )
+                    conv3 = tf.contrib.layers.conv2d(
+                        inputs=max_pool1,
+                        num_outputs=filter_count*2,
+                        kernel_size=5,
+                        # stride=1,
+                        # padding='SAME',
+                        # activation_fn=tf.nn.relu,
+                        # weights_initializer=initializers.xavier_initializer(),
+                        # biases_initializer=tf.zeros_initializer(),
+                    )
+                    conv3_bn = tf.contrib.layers.batch_norm(conv3,
+                                                            center=True,
+                                                            scale=True
+                                                            )
+                    max_pool2 = tf.contrib.layers.max_pool2d(
+                        inputs=conv3_bn,
+                        kernel_size=maxpool_size,
+                        # stride=2,
+                        # padding='VALID',
+                    )
 
-loss_mae = tf.losses.absolute_difference(y, fc2)
-loss_mae_round = tf.losses.absolute_difference(y, output)
+                    # flattened = tf.reshape(max_pool2, [-1, 23 * 23 * 32])
+                    flattened = tf.contrib.layers.flatten(max_pool2)
 
-optimiser = tf.contrib.optimizer_v2.AdamOptimizer(
-    learning_rate=learning_rate,
-).minimize(loss_mae)
+                    fc1 = tf.contrib.layers.fully_connected(
+                        inputs=flattened,
+                        num_outputs=hidden_nodes,
+                        # activation_fn=tf.nn.relu,
+                        # weights_initializer=initializers.xavier_initializer(),
+                        # biases_initializer=tf.zeros_initializer(),
+                    )
+                    # batch norm layer between fully connected layers!
+                    fc1_bn = tf.contrib.layers.batch_norm(fc1,
+                                                          center=True,
+                                                          scale=True
+                                                          )
+                    fc2 = tf.contrib.layers.fully_connected(
+                        inputs=fc1_bn,
+                        num_outputs=1,
+                        # activation_fn=tf.nn.relu,
+                        # weights_initializer=initializers.xavier_initializer(),
+                        # biases_initializer=tf.zeros_initializer(),
+                    )
 
-accuracy = tf.contrib.metrics.accuracy(
-    labels=y,
-    predictions=output
-)
+                    output = tf.cast(tf.round(fc2), tf.int32)
 
-# setup the initialisation operator
-init_op = tf.global_variables_initializer()
+                    loss_mae = tf.losses.absolute_difference(y, fc2)
+                    loss_mae_round = tf.losses.absolute_difference(y, output)
 
-with tf.Session() as sess:
-    # initialise the variables
-    sess.run(init_op)
+                    optimiser = tf.contrib.optimizer_v2.AdamOptimizer(
+                        learning_rate=learning_rate,
+                    ).minimize(loss_mae)
 
-    images_train = np.load('images_train.npy')
-    labels_training = np.load('labels_training.npy')
-    images_validation = np.load('images_validation.npy')
-    labels_validation = np.load('labels_validation.npy')
-    images_test = np.load('images_test.npy')
-    labels_test = np.load('labels_test.npy')
+                    accuracy = tf.contrib.metrics.accuracy(
+                        labels=y,
+                        predictions=output
+                    )
 
-    train_total_batch = int(len(labels_training) / batch_size)
-    validation_total_batch = int(len(labels_test) / batch_size)
+                    train_total_batch = int(len(labels_training) / batch_size)
+                    validation_total_batch = int(len(labels_test) / batch_size)
 
-    train_losses = []
-    validation_losses = []
-    for epoch in range(epochs):
-        sum_loss = 0
-        for i in range(train_total_batch):
-            print("Epoch: ", (epoch + 1), "Batch: ",
-                  i + 1, "/", train_total_batch, end="\r")
+                    # setup the initialisation operator
+                    init_op = tf.global_variables_initializer()
 
-            batch_x = images_train[i*batch_size:i*batch_size+batch_size]
-            batch_y = labels_training[i*batch_size:i*batch_size+batch_size]
+                    with tf.Session() as sess:
+                        # initialise the variables
+                        sess.run(init_op)
 
-            _, c = sess.run([optimiser, loss_mae_round], feed_dict={
-                            x: batch_x, y: batch_y})
-            sum_loss += c
+                        train_losses = []
+                        validation_losses = []
+                        for epoch in range(epochs):
+                            sum_loss = 0
+                            for i in range(train_total_batch):
+                                print("Epoch: ", (epoch + 1), "Batch: ",
+                                      i + 1, "/", train_total_batch, end="\r")
 
-        train_avg_loss = sum_loss / train_total_batch
+                                batch_x = images_train[i *
+                                                       batch_size:i*batch_size+batch_size]
+                                batch_y = labels_training[i *
+                                                          batch_size:i*batch_size+batch_size]
 
-        # Validation loss after the epoch
-        sum_loss = 0
-        for i in range(validation_total_batch):
-            batch_x = images_validation[i*batch_size:i*batch_size+batch_size]
-            batch_y = labels_validation[i*batch_size:i*batch_size+batch_size]
-            l = sess.run(loss_mae_round, feed_dict={x: batch_x, y: batch_y})
+                                _, c = sess.run([optimiser, loss_mae_round], feed_dict={
+                                                x: batch_x, y: batch_y})
+                                sum_loss += c
 
-            sum_loss += l
-        validation_avg_loss = sum_loss / validation_total_batch
+                            train_avg_loss = sum_loss / train_total_batch
 
-        train_losses.append(train_avg_loss)
-        validation_losses.append(validation_avg_loss)
+                            # Validation loss after the epoch
+                            sum_loss = 0
+                            for i in range(validation_total_batch):
+                                batch_x = images_validation[i *
+                                                            batch_size:i*batch_size+batch_size]
+                                batch_y = labels_validation[i *
+                                                            batch_size:i*batch_size+batch_size]
+                                l = sess.run(loss_mae_round, feed_dict={
+                                             x: batch_x, y: batch_y})
 
-        print("Epoch:", (epoch + 1), ", train loss:", "{:.3f}".format(
-            train_avg_loss), ", validation loss: {:.3f}".format(validation_avg_loss))
+                                sum_loss += l
+                            validation_avg_loss = sum_loss / validation_total_batch
 
-    with open('train_losses.txt', 'w') as f:
-        for item in train_losses:
-            f.write("%s\n" % item)
+                            train_losses.append(train_avg_loss)
+                            validation_losses.append(validation_avg_loss)
 
-    with open('validation_losses.txt', 'w') as f:
-        for item in validation_losses:
-            f.write("%s\n" % item)
+                            print("Epoch:", (epoch + 1), ", train loss:", "{:.3f}".format(
+                                train_avg_loss), ", validation loss: {:.3f}".format(validation_avg_loss))
 
-    print("\nTraining complete!")
+                        with open("./results/" + outfile_name + '_train.txt', 'w') as f:
+                            for item in train_losses:
+                                f.write("%s\n" % item)
 
-    test_total_batch = int(len(labels_test) / batch_size)
+                        with open("./results/" + outfile_name + '_validation.txt', 'w') as f:
+                            for item in validation_losses:
+                                f.write("%s\n" % item)
 
-    sum_loss = 0
-    for i in range(test_total_batch):
-        batch_x = images_test[i*batch_size:i*batch_size+batch_size]
-        batch_y = labels_test[i*batch_size:i*batch_size+batch_size]
-        test_loss, prediction = sess.run(
-            [loss_mae_round, output], feed_dict={x: batch_x, y: batch_y})
+                        print("\nTraining complete!")
 
-        sum_loss += test_loss
-    test_avg_loss = sum_loss / test_total_batch
+                        test_total_batch = int(len(labels_test) / batch_size)
 
-    # acc, prediction = sess.run([accuracy, output], feed_dict={
-    #                            x: images_test, y: labels_test})
+                        sum_loss = 0
+                        for i in range(test_total_batch):
+                            batch_x = images_test[i *
+                                                  batch_size:i*batch_size+batch_size]
+                            batch_y = labels_test[i *
+                                                  batch_size:i*batch_size+batch_size]
+                            test_loss, prediction = sess.run(
+                                [loss_mae_round, output], feed_dict={x: batch_x, y: batch_y})
 
-    print("Test Loss:", test_avg_loss)
-    print("prediction(last batch):", prediction.reshape(-1))
-    print("labels_test(last batch):", batch_y.reshape(-1))
+                            sum_loss += test_loss
+                        test_avg_loss = sum_loss / test_total_batch
+
+                        # acc, prediction = sess.run([accuracy, output], feed_dict={
+                        #                            x: images_test, y: labels_test})
+
+                        # print("Test Loss:", test_avg_loss)
+                        # print("prediction(last batch):",
+                        #       prediction.reshape(-1))
+                        # print("labels_test(last batch):", batch_y.reshape(-1))
 
 
-sm_train_losses = savgol_filter(train_losses, 25, 3)
-sm_validation_losses = savgol_filter(validation_losses, 25, 3)
+# sm_train_losses = savgol_filter(train_losses, 25, 3)
+# sm_validation_losses = savgol_filter(validation_losses, 25, 3)
 
-plt.plot(sm_train_losses, 'r')
-plt.plot(sm_validation_losses, 'b')
-plt.show()
+# plt.plot(sm_train_losses, 'r')
+# plt.plot(sm_validation_losses, 'b')
+# plt.show()
