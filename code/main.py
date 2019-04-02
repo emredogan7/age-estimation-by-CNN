@@ -1,4 +1,5 @@
-print("v2")
+from scipy.signal import savgol_filter
+import matplotlib.pyplot as plt
 import numpy as np
 import tensorflow as tf
 import os
@@ -7,8 +8,8 @@ import sys
 
 # hyperparamaters
 learning_rate = 0.001
-epochs = 1
-batch_size = 100
+epochs = 300
+batch_size = 50
 filter_count = 32
 
 x = tf.placeholder(tf.float32, [None, 91*91])
@@ -45,8 +46,13 @@ conv2 = tf.contrib.layers.conv2d(
     # weights_initializer=initializers.xavier_initializer(),
     # biases_initializer=tf.zeros_initializer(),
 )
+
+conv2_bn = tf.contrib.layers.batch_norm(conv2,
+                                        center=True,
+                                        scale=True
+                                        )
 max_pool1 = tf.contrib.layers.max_pool2d(
-    inputs=conv2,
+    inputs=conv2_bn,
     kernel_size=2,
     # stride=2,
     # padding='VALID',
@@ -61,8 +67,12 @@ conv3 = tf.contrib.layers.conv2d(
     # weights_initializer=initializers.xavier_initializer(),
     # biases_initializer=tf.zeros_initializer(),
 )
+conv3_bn = tf.contrib.layers.batch_norm(conv3,
+                                        center=True,
+                                        scale=True
+                                        )
 max_pool2 = tf.contrib.layers.max_pool2d(
-    inputs=conv3,
+    inputs=conv3_bn,
     kernel_size=2,
     # stride=2,
     # padding='VALID',
@@ -78,9 +88,13 @@ fc1 = tf.contrib.layers.fully_connected(
     # weights_initializer=initializers.xavier_initializer(),
     # biases_initializer=tf.zeros_initializer(),
 )
-
+# batch norm layer between fully connected layers!
+fc1_bn = tf.contrib.layers.batch_norm(fc1,
+                                      center=True,
+                                      scale=True
+                                      )
 fc2 = tf.contrib.layers.fully_connected(
-    inputs=fc1,
+    inputs=fc1_bn,
     num_outputs=1,
     # activation_fn=tf.nn.relu,
     # weights_initializer=initializers.xavier_initializer(),
@@ -167,7 +181,8 @@ with tf.Session() as sess:
     for i in range(test_total_batch):
         batch_x = images_test[i*batch_size:i*batch_size+batch_size]
         batch_y = labels_test[i*batch_size:i*batch_size+batch_size]
-        test_loss, prediction = sess.run([loss_mae_round, output], feed_dict={x: batch_x, y: batch_y})
+        test_loss, prediction = sess.run(
+            [loss_mae_round, output], feed_dict={x: batch_x, y: batch_y})
 
         sum_loss += test_loss
     test_avg_loss = sum_loss / test_total_batch
@@ -178,3 +193,11 @@ with tf.Session() as sess:
     print("Test Loss:", test_avg_loss)
     print("prediction(last batch):", prediction.reshape(-1))
     print("labels_test(last batch):", batch_y.reshape(-1))
+
+
+sm_train_losses = savgol_filter(train_losses, 25, 3)
+sm_validation_losses = savgol_filter(validation_losses, 25, 3)
+
+plt.plot(sm_train_losses, 'r')
+plt.plot(sm_validation_losses, 'b')
+plt.show()
