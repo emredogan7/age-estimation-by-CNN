@@ -7,8 +7,8 @@ import sys
 
 # hyperparamaters
 learning_rate = 0.001
-epochs = 300
-batch_size = 128
+epochs = 1
+batch_size = 100
 filter_count = 32
 
 x = tf.placeholder(tf.float32, [None, 91*91])
@@ -110,65 +110,71 @@ with tf.Session() as sess:
 
     images_train = np.load('images_train.npy')
     labels_training = np.load('labels_training.npy')
+    images_validation = np.load('images_validation.npy')
+    labels_validation = np.load('labels_validation.npy')
     images_test = np.load('images_test.npy')
     labels_test = np.load('labels_test.npy')
 
-    total_batch = int(len(labels_training) / batch_size)
-    list_of_losses = []
+    train_total_batch = int(len(labels_training) / batch_size)
+    validation_total_batch = int(len(labels_test) / batch_size)
+
+    train_losses = []
+    validation_losses = []
     for epoch in range(epochs):
         sum_loss = 0
-        for i in range(total_batch):
+        for i in range(train_total_batch):
             print("Epoch: ", (epoch + 1), "Batch: ",
-                  i + 1, "/", total_batch, end="\r")
+                  i + 1, "/", train_total_batch, end="\r")
 
             batch_x = images_train[i*batch_size:i*batch_size+batch_size]
             batch_y = labels_training[i*batch_size:i*batch_size+batch_size]
 
             _, c = sess.run([optimiser, loss_mae_round], feed_dict={
                             x: batch_x, y: batch_y})
-            sum_loss += c 
+            sum_loss += c
 
-        avg_loss = sum_loss / total_batch
+        train_avg_loss = sum_loss / train_total_batch
 
-        # train_acc = sess.run(accuracy, feed_dict={
-        #                     x: images_train[:500], y: labels_training[:500]})
-        
-        # Train acc after the epoch
-        sum_acc = 0
-        for i in range(total_batch):
-            batch_x = images_train[i*batch_size:i*batch_size+batch_size]
-            batch_y = labels_training[i*batch_size:i*batch_size+batch_size]
-            train_acc = sess.run(accuracy, feed_dict={x: batch_x, y: batch_y})
+        # Validation loss after the epoch
+        sum_loss = 0
+        for i in range(validation_total_batch):
+            batch_x = images_validation[i*batch_size:i*batch_size+batch_size]
+            batch_y = labels_validation[i*batch_size:i*batch_size+batch_size]
+            l = sess.run(loss_mae_round, feed_dict={x: batch_x, y: batch_y})
 
-            sum_acc += train_acc
-        avg_acc = sum_acc / total_batch 
+            sum_loss += l
+        validation_avg_loss = sum_loss / validation_total_batch
 
-        print("Epoch:", (epoch + 1), ", loss:",
-              "{:.3f}".format(avg_loss), ", train accuracy: {:.3f}".format(avg_acc))
+        train_losses.append(train_avg_loss)
+        validation_losses.append(validation_avg_loss)
 
-        list_of_losses.append(avg_loss)
+        print("Epoch:", (epoch + 1), ", train loss:", "{:.3f}".format(
+            train_avg_loss), ", validation loss: {:.3f}".format(validation_avg_loss))
 
-    with open('elbow_data.txt', 'w') as f:
-        for item in list_of_losses:
+    with open('train_losses.txt', 'w') as f:
+        for item in train_losses:
+            f.write("%s\n" % item)
+
+    with open('validation_losses.txt', 'w') as f:
+        for item in validation_losses:
             f.write("%s\n" % item)
 
     print("\nTraining complete!")
 
+    test_total_batch = int(len(labels_test) / batch_size)
 
-    total_batch = int(len(labels_test) / batch_size)
-
-    sum_acc = 0
-    for i in range(total_batch):
+    sum_loss = 0
+    for i in range(test_total_batch):
         batch_x = images_test[i*batch_size:i*batch_size+batch_size]
         batch_y = labels_test[i*batch_size:i*batch_size+batch_size]
-        test_acc, prediction = sess.run([accuracy, output], feed_dict={x: batch_x, y: batch_y})
+        test_loss, prediction = sess.run([loss_mae_round, output], feed_dict={x: batch_x, y: batch_y})
 
-        sum_acc += test_acc
-    avg_acc = sum_acc / total_batch 
+        sum_loss += test_loss
+    test_avg_loss = sum_loss / test_total_batch
 
     # acc, prediction = sess.run([accuracy, output], feed_dict={
     #                            x: images_test, y: labels_test})
 
-    print("Test Accuracy:", avg_acc)
+    print("Test Loss:", test_avg_loss)
     print("prediction(last batch):", prediction.reshape(-1))
-    print("labels_test(last batch:", batch_y.reshape(-1))
+    print("labels_test(last batch):", batch_y.reshape(-1))
