@@ -7,7 +7,7 @@ import sys
 
 
 images_train = np.load('images_train.npy')
-labels_training = np.load('labels_training.npy')
+labels_train = np.load('labels_train.npy')
 images_validation = np.load('images_validation.npy')
 labels_validation = np.load('labels_validation.npy')
 images_test = np.load('images_test.npy')
@@ -133,7 +133,7 @@ for learning_rate in [0.001, 0.01, 0.0001]:
                         predictions=output
                     )
 
-                    train_total_batch = int(len(labels_training) / batch_size)
+                    train_total_batch = int(len(labels_train) / batch_size)
                     validation_total_batch = int(len(labels_test) / batch_size)
 
                     # setup the initialisation operator
@@ -153,7 +153,7 @@ for learning_rate in [0.001, 0.01, 0.0001]:
 
                                 batch_x = images_train[i *
                                                        batch_size:i*batch_size+batch_size]
-                                batch_y = labels_training[i *
+                                batch_y = labels_train[i *
                                                           batch_size:i*batch_size+batch_size]
 
                                 _, c = sess.run([optimiser, loss_mae_round], feed_dict={
