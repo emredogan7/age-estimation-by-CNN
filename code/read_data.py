@@ -1,6 +1,7 @@
 import numpy as np
-import tensorflow as tf
 import os
+from skimage.io import imread
+
 
 # np.random.seed(1)
 
@@ -8,24 +9,15 @@ path_train = "./../data/train/"
 path_test = "./../data/test/"
 path_validation = "./../data/validation/"
 
-# path_train = "C:\\Users\\alper\\Workspaces\\cs559-homework\\data\\train\\"
-# path_validation = "C:\\Users\\alper\\Workspaces\\cs559-homework\\data\\validation\\"
-# path_test = "C:\\Users\\alper\\Workspaces\\cs559-homework\\data\\test\\"
-
 # read train and test file names
-filenames_train = os.listdir(path_train)
-filenames_validation = os.listdir(path_validation)
-filenames_test = os.listdir(path_test)
+filenames_train = os.listdir(path_train)#[:1000]
+filenames_validation = os.listdir(path_validation)#[:400]
+filenames_test = os.listdir(path_test)#[:300]
 
 # shuffle file names
 np.random.shuffle(filenames_train)
 np.random.shuffle(filenames_validation)
 np.random.shuffle(filenames_test)
-
-# get a set of filenames for speeding up
-filenames_train = filenames_train#[:1000]
-filenames_validation = filenames_validation#[:400]
-filenames_test = filenames_test#[:300]
 
 # get paths of file names
 filepaths_train = [path_train + f for f in filenames_train]
@@ -37,26 +29,17 @@ labels_train = np.array([[int(x[:3])] for x in filenames_train])
 labels_validation = np.array([[int(x[:3])] for x in filenames_validation])
 labels_test = np.array([[int(x[:3])] for x in filenames_test])
 
-np.save('labels_train.npy', labels_train)
-np.save('labels_validation.npy', labels_validation)
-np.save('labels_test.npy', labels_test)  
+np.save('./../data/labels_train.npy', labels_train)
+np.save('./../data/labels_validation.npy', labels_validation)
+np.save('./../data/labels_test.npy', labels_test)  
 
-# sess = tf.InteractiveSession()  
+images_train = np.array([imread(x).reshape(-1) for x in filepaths_train]) / 255
+images_validation = np.array([imread(x).reshape(-1) for x in filepaths_validation]) / 255
+images_test = np.array([imread(x).reshape(-1) for x in filepaths_test]) / 255
 
-with tf.Session() as sess:
-
-    images_train = np.array([tf.image.decode_jpeg(tf.read_file(
-        x)).eval().reshape(-1) for x in filepaths_train]) / 255
-    images_validation = np.array([tf.image.decode_jpeg(tf.read_file(
-        x)).eval().reshape(-1) for x in filepaths_validation]) / 255
-    images_test = np.array([tf.image.decode_jpeg(tf.read_file(
-        x)).eval().reshape(-1) for x in filepaths_test]) / 255
-
-    np.save('images_train.npy', images_train)
-    np.save('images_validation.npy', images_validation)
-    np.save('images_test.npy', images_test)  
-
-
+np.save('./../data/images_train.npy', images_train)
+np.save('./../data/images_validation.npy', images_validation)
+np.save('./../data/images_test.npy', images_test)  
 
 
 from imblearn.over_sampling import RandomOverSampler
@@ -69,5 +52,5 @@ np.random.shuffle(unison_array)
 
 X_resampled = np.array([x[:-1] for x in unison_array])
 y_resampled = np.array([[x[-1]] for x in unison_array])
-np.save('images_train_oversampled.npy', X_resampled)
-np.save('labels_train_oversampled.npy', y_resampled)
+np.save('./../data/images_train_oversampled.npy', X_resampled)
+np.save('./../data/labels_train_oversampled.npy', y_resampled)
