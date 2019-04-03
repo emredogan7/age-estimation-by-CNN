@@ -55,3 +55,19 @@ with tf.Session() as sess:
     np.save('images_train.npy', images_train)
     np.save('images_validation.npy', images_validation)
     np.save('images_test.npy', images_test)  
+
+
+
+
+from imblearn.over_sampling import RandomOverSampler
+ros = RandomOverSampler(random_state=0)
+X_resampled, y_resampled = ros.fit_resample(images_train, labels_training)
+
+unison_array = [ np.append(X_resampled[i], y_resampled[i]) for i in range(len(y_resampled))]
+
+np.random.shuffle(unison_array)
+
+X_resampled = np.array([x[:-1] for x in unison_array])
+y_resampled = np.array([[x[-1]] for x in unison_array])
+np.save('images_training_oversampled.npy', X_resampled)
+np.save('labels_training_oversampled.npy', y_resampled)
