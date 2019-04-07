@@ -355,3 +355,24 @@ def run_udacity_model(learning_rate = 0.001, epochs = 100, batch_size = 50, dr_k
       f.write("Training complete! Best validation at epoch {}. Validation loss: {:.3f}, Test loss: {:.3f}".format(best_validation_loss_epoch, validation_loss, test_loss))
 
     print("\nTraining complete! Best validation at epoch {}. Validation loss: {:.3f}, Test loss: {:.3f}".format(best_validation_loss_epoch, validation_loss, test_loss))
+
+def graph_tensorboard():   
+  tf.reset_default_graph()
+  x, y, output, train_mode, train_op, loss_mae_round = udacity_model(learning_rate=0.01, dr_keep=0.6, l2_scale=0.1, filter_coef=2)
+
+  # setup the initialisation operator
+  init_op = tf.global_variables_initializer()
+
+
+  with tf.Session() as sess:
+      sess.run(init_op)
+      writer = tf.summary.FileWriter("output", sess.graph)
+      print(sess.run([train_op, loss_mae_round], feed_dict={x: images_test, y: labels_test, train_mode:True}))
+      writer.close()
+
+run_udacity_model(learning_rate=0.0001, epochs=3000, batch_size=50, dr_keep=0.8, l2_scale=0.01, filter_coef=2, early_stop=100, save_result=True, outfile_name="EnSonModel")
+
+#restore_model("udacity_lr0.01_bs200_drk0.6_l20.0_fc2")
+
+# model_vars = tf.trainable_variables()
+# tf.contrib.slim.model_analyzer.analyze_vars(model_vars, print_info=True)
