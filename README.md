@@ -9,7 +9,7 @@
 
 ## Dataset:
 - We trained our model with a downsampled version of [UTKFace Dataset](http://aicip.eecs.utk.edu/wiki/UTKFace). 
-- Due to its large size, we cannot share original dataset(all training + validation + test data). But you can find some samples of our dataset from [here](./data-samples/).
+- Due to its large size, we cannot share original dataset(all training + validation + test data). But you can find some samples of our dataset from [here](./data-samples/). Notice that the first 3 letters of any image corresponds to its output layer (age of the person in the image).
 
 
 ## Model:
