@@ -1,7 +1,9 @@
-This is the README file of CS559 Deep Learning Course Homework.
+# Age Estimation by CNN Based Regression Model
 
-Emre Doğan, 21801133
-Hamdi Alperen Çetin, 21801132
+_Completed by: Hamdi Alperen Çetin & Emre Doğan_
+
+- This is the README file of CS559 Deep Learning Course Homework.
+
 
 Our project consists of source code, model log, results and our project report.
 
