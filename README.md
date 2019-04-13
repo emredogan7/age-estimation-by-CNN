@@ -23,7 +23,18 @@ To see a more detailed tensorboard graph regarding our model, click [here.](./fi
 ## Results
 - To decide on hyperparameters, we tried many different scenarios. Training and validation losses (Mean Average Error) for each scenario can be found [here.](./results/)
 
-- As our best case results,  
+- The best results are taken when the hyperparameters are,  
+
+
+| Hyperparameter| Choosen Value |
+| -------------   | -------------      |
+| Loss Function | Mean Sqaure Error	|
+| Learning Rate | 0.0001   |
+| Dropout Keep Probability | 0.6	|
+| L2 Reg. Constant | 0.0001   |
+| Batch Size | 200	|
+
+- The corresponding results in our best model is given below, 
 
 | Loss Type       | Mean Average Error |
 | -------------   | -------------      |
