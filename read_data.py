@@ -5,9 +5,9 @@ from skimage.io import imread
 
 # np.random.seed(1)
 
-path_train = "./../data/train/"
-path_test = "./../data/test/"
-path_validation = "./../data/validation/"
+path_train = "./data/train/"
+path_test = "./data/test/"
+path_validation = "./data/validation/"
 
 # read train and test file names
 filenames_train = os.listdir(path_train)#[:1000]
