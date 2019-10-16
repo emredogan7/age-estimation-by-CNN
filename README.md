@@ -1,8 +1,7 @@
 # Age Estimation by CNN Based Regression Model
 
 - _Completed by: Hamdi Alperen Çetin & Emre Doğan_
-
-- This is the README file of CS559 Deep Learning Course Homework, Bilkent University 2019.  
+  
 - We propose a Convolutional Neural Network Model to succesfully estimate the age of a person given her/his cropped face image. Different from the classical CNN models, our model ends up with a regression layer, not a classifier one. So, backpropagation process is done based on the regression output.  
 
 - For a more detailed technical report, check [here.](./doc/report.pdf)
